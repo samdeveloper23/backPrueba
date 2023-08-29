@@ -1,6 +1,6 @@
 # Development stage
 FROM node:18 as development
-WORKDIR /server/src
+WORKDIR /src
 COPY package*.json ./
 RUN npm install
 COPY ./src ./src
