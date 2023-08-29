@@ -16,13 +16,15 @@ const {
     deleteUser,
     getAllUsers,
     editUserInfo,
+    pruebas,
 } = require('../controllers/users');
 const authUserOptional = require('../middlewares/authUserOptional');
 const activationStatus = require('../controllers/users/activationStatus');
 const editUserPlace = require('../controllers/users/editUserPlace');
 
 //MIDDLEWARES USERS
-
+//Ruta de prueba para uso del despliegue.
+route.get('/users/prueba', pruebas)
 //Crea un usuario pendiente de validar.
 route.post(`/users`, newUser);
 
