@@ -1,5 +1,5 @@
 # Development stage
-FROM node:16 as development
+FROM node:18 as development
 WORKDIR /usr/src
 COPY package*.json ./
 RUN npm install
