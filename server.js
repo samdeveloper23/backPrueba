@@ -24,7 +24,7 @@ app.use(express.static(process.env.UPLOADS_DIR));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
+app.get('/hola', (req, res) => {
   res.send('Hola, el servidor está en funcionamiento.');
 });
 //MIDDLEWARE USERS
