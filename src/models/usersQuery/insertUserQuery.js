@@ -18,7 +18,7 @@ const insertUserQuery = async (
         connection = await getDB();
 
         let [users] = await connection.query(
-            `SELECT id FROM users WHERE email = ?`,
+            `SELECT id FROM users WHERE email = $1`,
             [email]
         );
 
@@ -27,7 +27,7 @@ const insertUserQuery = async (
         }
 
         [users] = await connection.query(
-            `SELECT id FROM users WHERE username = ?`,
+            `SELECT id FROM users WHERE username = $1`,
             [username]
         );
 
@@ -38,7 +38,7 @@ const insertUserQuery = async (
         const hashedPass = await bcrypt.hash(password, 10);
 
         await connection.query(
-            `INSERT INTO users (role, email, username, ownername, password, createdAt, registrationCode) VALUES(?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO users (role, email, username, ownername, password, createdAt, registrationCode) VALUES($1, $2, $3, $4, $5, $6, $7)`,
             [role, email, username, ownername, hashedPass, new Date(), registrationCode]
         );
     } finally {

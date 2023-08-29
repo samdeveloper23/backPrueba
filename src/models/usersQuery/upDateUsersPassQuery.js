@@ -9,7 +9,7 @@ const upDateUsersPassQuery = async (currentPass, newPass, userId) => {
         connection = await getDB();
 
         const [users] = await connection.query(
-            `SELECT password FROM users WHERE id = ?`,
+            `SELECT password FROM users WHERE id = $1`,
             [userId]
         );
 
@@ -21,10 +21,15 @@ const upDateUsersPassQuery = async (currentPass, newPass, userId) => {
 
         const hashedPass = await bcrypt.hash(newPass, 10);
 
-        await connection.query(
-            'UPDATE users SET password = ?, modifiedAt = ? WHERE id = ?',
-            [hashedPass, new Date(), userId]
-        );
+        const query = `
+            UPDATE users
+            SET password = $1, modifiedAt = $2
+            WHERE id = $3
+        `;
+
+        const values = [hashedPass, new Date(), userId];
+
+        await connection.query(query, values);
     } finally {
         if (connection) connection.release();
     }

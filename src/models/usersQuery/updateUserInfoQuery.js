@@ -6,13 +6,19 @@ const updateUserInfoQuery = async (personalInfo, userId) => {
     try {
         connection = await getDB();
 
-        await connection.query(
-            `UPDATE users SET personalInfo = ?, modifiedAt = ? WHERE id = ?`,
-            [personalInfo, new Date(), userId]
-        );
+        const query = `
+            UPDATE users
+            SET personalInfo = $1, modifiedAt = $2
+            WHERE id = $3
+        `;
+
+        const values = [personalInfo, new Date(), userId];
+
+        await connection.query(query, values);
     } finally {
         if (connection) connection.release();
     }
 };
 
 module.exports = updateUserInfoQuery;
+

@@ -8,7 +8,7 @@ const updateUsersRegCodeQuery = async (regCode) => {
     connection = await getDB();
 
     const [users] = await connection.query(
-      `SELECT registrationCode FROM users WHERE registrationCode = ?`,
+      `SELECT registrationCode FROM users WHERE registrationCode = $1`,
       [regCode]
     );
 
@@ -18,10 +18,15 @@ const updateUsersRegCodeQuery = async (regCode) => {
 
     const modifiedAt = new Date();
 
-    await connection.query(
-      'UPDATE users SET registrationCode = null, active = true, modifiedAt = ? WHERE registrationCode = ?',
-      [modifiedAt, regCode]
-    );
+    const query = `
+            UPDATE users
+            SET registrationCode = null, active = true, modifiedAt = $1
+            WHERE registrationCode = $2
+        `;
+
+    const values = [modifiedAt, regCode];
+
+    await connection.query(query, values);
   } finally {
     if (connection) connection.release();
   }

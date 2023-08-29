@@ -6,13 +6,19 @@ const updateUserRecoverPassQuery = async (email, recoverPassCode) => {
   try {
     connection = await getDB();
 
-    await connection.query(
-      `UPDATE users SET recoverPassCode = ?, modifiedAt = ? WHERE email = ?`,
-      [recoverPassCode, new Date(), email]
-    );
+    const query = `
+            UPDATE users
+            SET recoverPassCode = $1, modifiedAt = $2
+            WHERE email = $3
+        `;
+
+    const values = [recoverPassCode, new Date(), email];
+
+    await connection.query(query, values);
   } finally {
     if (connection) connection.release();
   }
 };
 
 module.exports = updateUserRecoverPassQuery;
+

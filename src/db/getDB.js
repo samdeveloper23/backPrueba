@@ -1,34 +1,30 @@
-const mysql = require('mysql2/promise');
+const { Pool } = require('pg');
 
-const { MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB } = process.env;
+const { PG_HOST, PG_USER, PG_PASS, PG_DB, DATABASE_URL } = process.env;
 
 let pool;
 
 const getDB = async () => {
     try {
         if (!pool) {
-            const db = await mysql.createConnection({
-                host: MYSQL_HOST,
-                user: MYSQL_USER,
-                password: MYSQL_PASS,
-                timezone: 'Z',
-            });
+            const sslOptions = {
+                rejectUnauthorized: false, // Cambiar a 'true' una vez tengas el certificado SSL adecuado
+                mode: 'prefer',
+            };
 
-            db.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}`);
-
-            db.query(`USE ${MYSQL_DB}`);
-
-            pool = mysql.createPool({
-                connectionLimit: 10,
-                host: MYSQL_HOST,
-                user: MYSQL_USER,
-                password: MYSQL_PASS,
-                database: MYSQL_DB,
-                timezone: 'Z',
+            pool = new Pool({
+                max: 10,
+                host: PG_HOST,
+                port: 5432, // Puerto predeterminado de PostgreSQL
+                user: PG_USER,
+                password: PG_PASS,
+                ssl: sslOptions,
+                database: PG_DB || '', // Opcionalmente, utiliza PG_DB si está definido
+                connectionString: DATABASE_URL, // Usar DATABASE_URL si está definido
             });
         }
 
-        return await pool.getConnection();
+        return await pool.connect();
     } catch (error) {
         console.error(error);
     }

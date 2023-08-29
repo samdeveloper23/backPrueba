@@ -7,20 +7,21 @@ const selectAllUsersQuery = async (keyword = '') => {
     try {
         connection = await getDB();
 
-        const [users] = await connection.query(
-            `
-          SELECT 
-              id, 
-              username, 
-              email, 
-              role, 
-              avatar,
-              place
-          FROM users 
-          WHERE userName LIKE ? OR role LIKE ? OR place LIKE ?
-      `,
-            [`%${keyword}%`, `%${keyword}%`, `%${keyword}%`]
-        );
+        const query = `
+            SELECT 
+                id, 
+                username, 
+                email, 
+                role, 
+                avatar,
+                place
+            FROM users 
+            WHERE username ILIKE $1 OR role ILIKE $2 OR place ILIKE $3
+        `;
+
+        const values = [`%${keyword}%`, `%${keyword}%`, `%${keyword}%`];
+
+        const { rows: users } = await connection.query(query, values);
 
         // Si no hay usuarios, lanzamos un error.
         if (users.length < 1) {

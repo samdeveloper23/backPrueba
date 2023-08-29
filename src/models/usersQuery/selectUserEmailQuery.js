@@ -7,10 +7,15 @@ const selectUserEmailQuery = async (email) => {
   try {
     connection = await getDB();
 
-    const [users] = await connection.query(
-      `SELECT id, password, active, role FROM users WHERE email = ?`,
-      [email]
-    );
+    const query = `
+      SELECT id, password, active, role
+      FROM users
+      WHERE email = $1
+    `;
+
+    const values = [email];
+
+    const { rows: users } = await connection.query(query, values);
 
     if (users.length < 1) {
       generateError('Usuario no registrado', 404);
@@ -18,7 +23,7 @@ const selectUserEmailQuery = async (email) => {
 
     if (users[0].active === 0) {
       generateError(
-        'Es necesario activar la cuenta a traves de la verificación por email',
+        'Es necesario activar la cuenta a través de la verificación por email',
         401
       );
     }

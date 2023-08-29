@@ -6,17 +6,16 @@ const activationStatusQuery = async (email) => {
     try {
         connection = await getDB();
 
-        const [user] = await connection.query(
-            `SELECT active FROM users WHERE email = ?`,
-            [email]
-        );
+        const query = `SELECT active FROM users WHERE email = $1`;
+        const values = [email];
 
-        if (user.length === 0) {
-            throw new Error(
-                'El usuario no existe o el email no está registrado.'
-            );
+        const result = await connection.query(query, values);
+
+        if (result.rows.length === 0) {
+            throw new Error('El usuario no existe o el email no está registrado.');
         }
-        const activeStatus = user[0].active;
+
+        const activeStatus = result.rows[0].active;
 
         if (activeStatus) {
             console.log('El usuario está activado.');
