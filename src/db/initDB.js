@@ -23,7 +23,7 @@ const main = async () => {
                 password VARCHAR(100) NOT NULL,
                 username VARCHAR(100) UNIQUE NOT NULL,
                 ownername VARCHAR(100) NOT NULL,
-                role VARCHAR(10) DEFAULT 'Gato', -- En PostgreSQL, ENUM puede no ser adecuado
+                role VARCHAR(10) DEFAULT 'Gato',
                 avatar VARCHAR(100),
                 place VARCHAR(70),
                 personalInfo VARCHAR(300),
