@@ -38,7 +38,7 @@ FROM publications P
 INNER JOIN users U ON P.userId = U.id 
 LEFT JOIN likes L ON P.id = L.publicationId
 LEFT JOIN comments C ON P.id = C.publicationId
-LEFT JOIN users UC ON C.user_id = UC.id
+LEFT JOIN users UC ON C.userId = UC.id
 WHERE P.title ILIKE $2 OR P.place ILIKE $2 OR P.description ILIKE $2 OR P.type ILIKE $2 OR U.username ILIKE $2
 GROUP BY P.id, C.id
 ORDER BY P.createdAt ${date}
