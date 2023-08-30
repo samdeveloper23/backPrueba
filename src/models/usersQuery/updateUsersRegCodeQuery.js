@@ -7,7 +7,7 @@ const updateUsersRegCodeQuery = async (regCode) => {
   try {
     connection = await getDB();
 
-    const [users] = await connection.query(
+    const queryResult = await connection.query(
       `SELECT registrationCode FROM users WHERE registrationCode = $1`,
       [regCode]
     );
