@@ -14,26 +14,26 @@ const selectPublicationtByIdQuery = async (publicationId, userId = 0) => {
             P.title,
             P.place,
             P.type,
-            P.user_id AS userId,
+            P.userId AS userId,
             P.description,
             U.username AS author,
             U.avatar AS authorAvatar, -- Nuevo campo para el avatar del autor
-            P.user_id AS authorId,
-            P.photo_name AS photoName,
-            P.video_name AS videoName,
-            P.user_id = $1 AS owner,
-            P.created_at AS createdAt,
+            P.userId AS authorId,
+            P.photoName AS photoName,
+            P.videoName AS videoName,
+            P.userId = $1 AS owner,
+            P.createdAt AS createdAt,
             COUNT(L.id) AS likes,
-            BOOL_OR(L.user_id = $1) AS likedByMe,
+            BOOL_OR(L.userId = $1) AS likedByMe,
             C.id AS commentId,
             C.text AS commentText,
             UC.username AS commenter,
             UC.avatar AS commenterAvatar
         FROM publications P
-        INNER JOIN users U ON P.user_id = U.id
-        LEFT JOIN likes L ON P.id = L.publication_id
-        LEFT JOIN comments C ON P.id = C.publication_id
-        LEFT JOIN users UC ON C.user_id = UC.id
+        INNER JOIN users U ON P.userId = U.id
+        LEFT JOIN likes L ON P.id = L.publicationId
+        LEFT JOIN comments C ON P.id = C.publicationId
+        LEFT JOIN users UC ON C.userId = UC.id
         WHERE P.id = $2
         GROUP BY P.id, C.id
       `,

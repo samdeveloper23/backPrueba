@@ -9,7 +9,7 @@ const insertLikeQuery = async (publicationId, userId) => {
     client = await getDB();
 
     const { rows: likes } = await client.query(
-      `SELECT id FROM likes WHERE publication_id = $1 AND user_id = $2`,
+      `SELECT id FROM likes WHERE publicationId = $1 AND userId = $2`,
       [publicationId, userId]
     );
 
@@ -18,7 +18,7 @@ const insertLikeQuery = async (publicationId, userId) => {
     }
 
     await client.query(
-      `INSERT INTO likes(publication_id, user_id, created_at) VALUES($1, $2, $3)`,
+      `INSERT INTO likes(publicationId, userId, createdAt) VALUES($1, $2, $3)`,
       [publicationId, userId, new Date()]
     );
   } finally {

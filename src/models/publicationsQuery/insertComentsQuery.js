@@ -7,7 +7,7 @@ const insertComment = async (text, publicationId, userId) => {
     client = await getDB();
 
     const { rows: comment } = await client.query(
-      `INSERT INTO comments(text, publication_id, user_id, created_at) VALUES($1, $2, $3, $4) RETURNING id`,
+      `INSERT INTO comments(text, publicationId, userId, createdAt) VALUES($1, $2, $3, $4) RETURNING id`,
       [text, publicationId, userId, new Date()]
     );
 

@@ -7,7 +7,7 @@ const deleteCommentByIdQuery = async (commentId, publicationId) => {
     client = await getDB();
 
     const { rows: comment } = await client.query(
-      'SELECT * FROM comments WHERE publication_id = $1 AND id = $2',
+      'SELECT * FROM comments WHERE publicationId = $1 AND id = $2',
       [publicationId, commentId]
     );
 
@@ -16,7 +16,7 @@ const deleteCommentByIdQuery = async (commentId, publicationId) => {
     }
 
     await client.query(
-      'DELETE FROM comments WHERE id = $1 AND publication_id = $2',
+      'DELETE FROM comments WHERE id = $1 AND publicationId = $2',
       [commentId, publicationId]
     );
   } finally {

@@ -8,7 +8,7 @@ const deleteLikeQuery = async (publicationId, userId) => {
     client = await getDB();
 
     const { rows: likes } = await client.query(
-      `SELECT id FROM likes WHERE publication_id = $1 AND user_id = $2`,
+      `SELECT id FROM likes WHERE publicationId = $1 AND userId = $2`,
       [publicationId, userId]
     );
 
@@ -17,7 +17,7 @@ const deleteLikeQuery = async (publicationId, userId) => {
     }
 
     await client.query(
-      `DELETE FROM likes WHERE publication_id = $1 AND user_id = $2`,
+      `DELETE FROM likes WHERE publicationId = $1 AND userId = $2`,
       [publicationId, userId]
     );
   } finally {

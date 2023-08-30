@@ -17,7 +17,7 @@ const insertPublicationQuery = async (
         const createdAt = new Date();
 
         const { rows: publication } = await client.query(
-            `INSERT INTO publications(title, photo_name, video_name, place, type, description, user_id, created_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
+            `INSERT INTO publications(title, photoName, videoName, place, type, description, userId, createdAt) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
             [
                 title,
                 photoName,

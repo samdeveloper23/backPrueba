@@ -8,12 +8,12 @@ const deletePublicationQuery = async (publicationId) => {
   try {
     client = await getDB();
 
-    await client.query('DELETE FROM comments WHERE publication_id = $1', [
+    await client.query('DELETE FROM comments WHERE publicationId = $1', [
       publicationId,
     ]);
 
     const { rows: deletePhotoPublications } = await client.query(
-      'SELECT photo_name FROM publications WHERE id = $1',
+      'SELECT photoName FROM publications WHERE id = $1',
       [publicationId]
     );
 
@@ -24,7 +24,7 @@ const deletePublicationQuery = async (publicationId) => {
     }
 
     const { rows: deleteVideoPublications } = await client.query(
-      'SELECT video_name FROM publications WHERE id = $1',
+      'SELECT videoName FROM publications WHERE id = $1',
       [publicationId]
     );
 
