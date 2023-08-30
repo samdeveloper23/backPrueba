@@ -1,15 +1,14 @@
 const getDB = require('../../db/getDB');
-
 const { generateError } = require('../../services/errors');
 
 const deleteLikeQuery = async (publicationId, userId) => {
-  let connection;
+  let client;
 
   try {
-    connection = await getDB();
+    client = await getDB();
 
-    const [likes] = await connection.query(
-      `SELECT id FROM likes WHERE publicationId = ? AND userId = ?`,
+    const { rows: likes } = await client.query(
+      `SELECT id FROM likes WHERE publication_id = $1 AND user_id = $2`,
       [publicationId, userId]
     );
 
@@ -17,12 +16,12 @@ const deleteLikeQuery = async (publicationId, userId) => {
       generateError('Aún no hay ningún like', 404);
     }
 
-    await connection.query(
-      `DELETE FROM likes WHERE publicationId = ? AND userId = ?`,
+    await client.query(
+      `DELETE FROM likes WHERE publication_id = $1 AND user_id = $2`,
       [publicationId, userId]
     );
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 };
 

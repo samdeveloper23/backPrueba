@@ -1,23 +1,23 @@
 const getDB = require('../../db/getDB');
 
-const insertComent = async (text, publicationId, userId) => {
-  let connection;
+const insertComment = async (text, publicationId, userId) => {
+  let client;
 
   try {
-    connection = await getDB();
+    client = await getDB();
 
-    const [comemnt] = await connection.query(
-      `INSERT INTO comments(text, publicationId, userId, createdAt) VALUES(?, ?, ?, ?)`,
+    const { rows: comment } = await client.query(
+      `INSERT INTO comments(text, publication_id, user_id, created_at) VALUES($1, $2, $3, $4) RETURNING id`,
       [text, publicationId, userId, new Date()]
     );
 
     return {
-      id: comemnt.insertId,
+      id: comment[0].id,
       text,
     };
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 };
 
-module.exports = insertComent;
+module.exports = insertComment;

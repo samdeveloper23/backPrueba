@@ -24,3 +24,4 @@ const getListPublication = async (req, res, next) => {
 };
 
 module.exports = getListPublication;
+

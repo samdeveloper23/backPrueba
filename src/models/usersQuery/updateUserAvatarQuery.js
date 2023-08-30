@@ -21,3 +21,4 @@ const updateUserAvatarQuery = async (avatar, userId) => {
 };
 
 module.exports = updateUserAvatarQuery;
+

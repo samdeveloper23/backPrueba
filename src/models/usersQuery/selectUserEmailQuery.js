@@ -35,3 +35,4 @@ const selectUserEmailQuery = async (email) => {
 };
 
 module.exports = selectUserEmailQuery;
+

@@ -29,3 +29,4 @@ const editUserAvatar = async (req, res, next) => {
 };
 
 module.exports = editUserAvatar;
+

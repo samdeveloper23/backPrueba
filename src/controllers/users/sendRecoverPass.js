@@ -42,3 +42,4 @@ const sendRecoverPass = async (req, res, next) => {
 };
 
 module.exports = sendRecoverPass;
+

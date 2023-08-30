@@ -1,13 +1,13 @@
 const getDB = require('../../db/getDB');
 
 const deleteCommentByIdQuery = async (commentId, publicationId) => {
-  let connection;
+  let client;
 
   try {
-    connection = await getDB();
+    client = await getDB();
 
-    const [comment] = await connection.query(
-      'SELECT * FROM comments WHERE publicationId = ? AND id = ?',
+    const { rows: comment } = await client.query(
+      'SELECT * FROM comments WHERE publication_id = $1 AND id = $2',
       [publicationId, commentId]
     );
 
@@ -15,12 +15,12 @@ const deleteCommentByIdQuery = async (commentId, publicationId) => {
       throw new Error('El comentario no existe');
     }
 
-    await connection.query(
-      'DELETE FROM comments WHERE id = ? AND publicationId = ?',
+    await client.query(
+      'DELETE FROM comments WHERE id = $1 AND publication_id = $2',
       [commentId, publicationId]
     );
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 };
 

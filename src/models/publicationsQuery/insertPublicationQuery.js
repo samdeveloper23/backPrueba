@@ -9,15 +9,15 @@ const insertPublicationQuery = async (
     description,
     userId
 ) => {
-    let connection;
+    let client;
 
     try {
-        connection = await getDB();
+        client = await getDB();
 
         const createdAt = new Date();
 
-        const [publication] = await connection.query(
-            `INSERT INTO publications(title, photoName, videoName, place, type, description, userId, createdAt) VALUES(?, ?, ?, ?, ?, ?, ?, ?)`,
+        const { rows: publication } = await client.query(
+            `INSERT INTO publications(title, photo_name, video_name, place, type, description, user_id, created_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`,
             [
                 title,
                 photoName,
@@ -31,7 +31,7 @@ const insertPublicationQuery = async (
         );
 
         return {
-            id: publication.insertId,
+            id: publication[0].id,
             title,
             photoName,
             videoName,
@@ -42,7 +42,7 @@ const insertPublicationQuery = async (
             createdAt,
         };
     } finally {
-        if (connection) connection.release();
+        if (client) client.release();
     }
 };
 

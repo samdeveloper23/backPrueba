@@ -2,42 +2,42 @@ const getDB = require('../../db/getDB');
 const { generateError } = require('../../services/errors');
 
 const selectPublicationtByIdQuery = async (publicationId, userId = 0) => {
-    let connection;
+    let client;
 
     try {
-        connection = await getDB();
+        client = await getDB();
 
-        const [publications] = await connection.query(
+        const { rows: publications } = await client.query(
             `
             SELECT
             P.id AS publicationId,
             P.title,
             P.place,
             P.type,
-            P.userId,
+            P.user_id AS userId,
             P.description,
             U.username AS author,
             U.avatar AS authorAvatar, -- Nuevo campo para el avatar del autor
-            P.userId AS authorId,
-            P.photoName,
-            P.videoName,
-            P.userId = ? AS owner,
-            P.createdAt,
+            P.user_id AS authorId,
+            P.photo_name AS photoName,
+            P.video_name AS videoName,
+            P.user_id = $1 AS owner,
+            P.created_at AS createdAt,
             COUNT(L.id) AS likes,
-            BIT_OR(L.userId = ?) AS likedByMe,
+            BOOL_OR(L.user_id = $1) AS likedByMe,
             C.id AS commentId,
             C.text AS commentText,
             UC.username AS commenter,
             UC.avatar AS commenterAvatar
         FROM publications P
-        INNER JOIN users U ON P.userId = U.id
-        LEFT JOIN likes L ON P.id = L.publicationId
-        LEFT JOIN comments C ON P.id = C.publicationId
-        LEFT JOIN users UC ON C.userId = UC.id
-        WHERE P.id = ?
+        INNER JOIN users U ON P.user_id = U.id
+        LEFT JOIN likes L ON P.id = L.publication_id
+        LEFT JOIN comments C ON P.id = C.publication_id
+        LEFT JOIN users UC ON C.user_id = UC.id
+        WHERE P.id = $2
         GROUP BY P.id, C.id
       `,
-            [userId, userId, publicationId]
+            [userId, publicationId]
         );
 
         if (publications.length < 1) {
@@ -77,7 +77,7 @@ const selectPublicationtByIdQuery = async (publicationId, userId = 0) => {
 
         return publication;
     } finally {
-        if (connection) connection.release();
+        if (client) client.release();
     }
 };
 

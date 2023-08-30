@@ -8,3 +8,4 @@ const validateSchema = async (schema, data) => {
 };
 
 module.exports = validateSchema;
+

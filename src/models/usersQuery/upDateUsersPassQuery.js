@@ -36,3 +36,4 @@ const upDateUsersPassQuery = async (currentPass, newPass, userId) => {
 };
 
 module.exports = upDateUsersPassQuery;
+

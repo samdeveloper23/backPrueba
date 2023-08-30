@@ -21,3 +21,4 @@ const editUsersPass = async (req, res, next) => {
 };
 
 module.exports = editUsersPass;
+

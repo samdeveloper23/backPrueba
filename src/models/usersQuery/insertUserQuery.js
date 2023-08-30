@@ -31,3 +31,4 @@ const insertUserQuery = async (
 };
 
 module.exports = insertUserQuery;
+

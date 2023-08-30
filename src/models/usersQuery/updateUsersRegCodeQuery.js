@@ -29,3 +29,4 @@ const updateUsersRegCodeQuery = async (regCode) => {
 };
 
 module.exports = updateUsersRegCodeQuery;
+

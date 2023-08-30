@@ -32,3 +32,4 @@ const activationStatusQuery = async (email) => {
 };
 
 module.exports = activationStatusQuery;
+

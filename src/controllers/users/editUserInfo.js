@@ -24,3 +24,4 @@ const editUserInfo = async (req, res, next) => {
 };
 
 module.exports = editUserInfo;
+

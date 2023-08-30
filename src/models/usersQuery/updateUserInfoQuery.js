@@ -22,3 +22,4 @@ const updateUserInfoQuery = async (personalInfo, userId) => {
 
 module.exports = updateUserInfoQuery;
 
+

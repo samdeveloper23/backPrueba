@@ -67,3 +67,4 @@ route.put('/users/password', authUser, userExists, editUsersPass);
 route.delete('/users/:userId', authUser, userExists, deleteUser);
 
 module.exports = route;
+

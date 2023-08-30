@@ -22,3 +22,4 @@ const updateUserPlaceQuery = async (place, userId) => {
 
 module.exports = updateUserPlaceQuery;
 
+

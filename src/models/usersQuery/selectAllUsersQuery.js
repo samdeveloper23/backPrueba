@@ -38,3 +38,4 @@ const selectAllUsersQuery = async (keyword = '') => {
 };
 
 module.exports = selectAllUsersQuery;
+

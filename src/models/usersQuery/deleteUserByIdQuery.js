@@ -19,3 +19,4 @@ const updateUserEmailToDeletedQuery = async (userId) => {
   }
 };
 module.exports = updateUserEmailToDeletedQuery;
+

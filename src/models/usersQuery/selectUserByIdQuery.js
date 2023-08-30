@@ -45,3 +45,4 @@ const selectUsersByIdQuery = async (userId) => {
 };
 
 module.exports = selectUsersByIdQuery;
+

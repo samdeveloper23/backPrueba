@@ -28,3 +28,4 @@ const editUserPlace = async (req, res, next) => {
 };
 
 module.exports = editUserPlace;
+

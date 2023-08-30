@@ -6,14 +6,14 @@ const selectAllPublicationQuery = async (
     date = '',
     userId = 0
 ) => {
-    let connection;
+    let client;
 
     try {
-        connection = await getDB();
+        client = await getDB();
 
         date = date.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
 
-        const [results] = await connection.query(
+        const { rows: results } = await client.query(
             `
       SELECT
         P.id AS publicationId,
@@ -23,33 +23,28 @@ const selectAllPublicationQuery = async (
         P.description,
         U.username AS author,
         U.avatar AS authorAvatar,
-        P.userId AS authorId,
-        P.photoName,
-        P.videoName,
-        P.userId = ? AS owner,
-        P.createdAt,
+        P.user_id AS authorId,
+        P.photo_name AS photoName,
+        P.video_name AS videoName,
+        P.user_id = $1 AS owner,
+        P.created_at AS createdAt,
         COUNT(L.id) AS likes,
-        BIT_OR(L.userId = ?) AS likedByMe,
+        BOOL_OR(L.user_id = $1) AS likedByMe,
         C.id AS commentId,
         C.text AS commentText,
         UC.username AS commenter,
         UC.avatar AS commenterAvatar
       FROM publications P
-      INNER JOIN users U ON P.userId = U.id 
-      LEFT JOIN likes L ON P.id = L.publicationId
-      LEFT JOIN comments C ON P.id = C.publicationId
-      LEFT JOIN users UC ON C.userId = UC.id
-      WHERE P.title LIKE ? OR P.place LIKE ? OR P.description LIKE ? OR P.type LIKE ? OR U.username LIKE ?
+      INNER JOIN users U ON P.user_id = U.id 
+      LEFT JOIN likes L ON P.id = L.publication_id
+      LEFT JOIN comments C ON P.id = C.publication_id
+      LEFT JOIN users UC ON C.user_id = UC.id
+      WHERE P.title ILIKE $2 OR P.place ILIKE $2 OR P.description ILIKE $2 OR P.type ILIKE $2 OR U.username ILIKE $2
       GROUP BY P.id, C.id
-      ORDER BY P.createdAt ${date}
+      ORDER BY P.created_at ${date}
     `,
             [
                 userId,
-                userId,
-                `%${keyword}%`,
-                `%${keyword}%`,
-                `%${keyword}%`,
-                `%${keyword}%`,
                 `%${keyword}%`,
             ]
         );
@@ -117,7 +112,7 @@ const selectAllPublicationQuery = async (
 
         return publications;
     } finally {
-        if (connection) connection.release();
+        if (client) client.release();
     }
 };
 

@@ -29,3 +29,4 @@ const deleteUser = async (req, res, next) => {
 };
 
 module.exports = deleteUser;
+

@@ -15,3 +15,4 @@ const activationStatus = async (req, res, next) => {
 };
 
 module.exports = activationStatus;
+

@@ -22,3 +22,4 @@ const updateUserRecoverPassQuery = async (email, recoverPassCode) => {
 
 module.exports = updateUserRecoverPassQuery;
 
+
