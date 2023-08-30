@@ -33,7 +33,7 @@ const newPublication = async (req, res, next) => {
         if (req.files.video) {
             videoName = await saveVideo(req.files.video, 50 * 1024 * 1024);
         }
-
+        console.log(req.user.id);
         const publication = await insertPublicationQuery(
             title,
             photoName,
