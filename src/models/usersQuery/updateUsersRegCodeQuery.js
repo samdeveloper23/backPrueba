@@ -12,10 +12,6 @@ const updateUsersRegCodeQuery = async (regCode) => {
       [regCode]
     );
 
-    if (users.length < 1) {
-      generateError('Codigo de registro inválido', 404);
-    }
-
     const modifiedAt = new Date();
 
     const query = `
