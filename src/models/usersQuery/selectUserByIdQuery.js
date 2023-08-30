@@ -5,7 +5,7 @@ const selectUsersByIdQuery = async (userId) => {
 
   try {
     connection = await getDB();
-
+    console.log(userId);
     const query = `
       SELECT
         u.id AS userId,

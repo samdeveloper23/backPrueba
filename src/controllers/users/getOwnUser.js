@@ -3,7 +3,7 @@ const selectUserByIdQuery = require('../../models/usersQuery/selectUserByIdQuery
 const getOwnUser = async (req, res, next) => {
     try {
         const user = await selectUserByIdQuery(req.user.id);
-
+        console.log(req.user.id);
         res.send({
             status: 'ok',
             data: {
