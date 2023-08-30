@@ -35,6 +35,45 @@ const main = async () => {
             )
         `);
 
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS publications (
+                id SERIAL PRIMARY KEY,
+                title VARCHAR(50) NOT NULL,
+                photoName VARCHAR(100),
+                videoName VARCHAR(100),
+                place VARCHAR(100),
+                type VARCHAR(20) DEFAULT 'Normal',
+                description VARCHAR(200),
+                userId INT NOT NULL,
+                createdAt TIMESTAMP NOT NULL,
+                FOREIGN KEY (userId) REFERENCES users(id)
+            )    
+        `);
+
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS likes (
+                id SERIAL PRIMARY KEY,
+                publicationId INT NOT NULL,
+                userId INT NOT NULL,
+                createdAt TIMESTAMP NOT NULL,
+                modifiedAt TIMESTAMP,
+                FOREIGN KEY (publicationId) REFERENCES publications(id),
+                FOREIGN KEY (userId) REFERENCES users(id)
+            )
+        `);
+
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS comments (
+                id SERIAL PRIMARY KEY,
+                text VARCHAR(200) NOT NULL,
+                publicationId INT NOT NULL,
+                userId INT NOT NULL,
+                createdAt TIMESTAMP NOT NULL,
+                FOREIGN KEY (publicationId) REFERENCES publications(id),
+                FOREIGN KEY (userId) REFERENCES users(id)
+            )
+        `);
+
         // Los otros queries de creación de tablas se mantienen similares, con ajustes en sintaxis
 
         console.log('¡Tablas creadas!');

@@ -1,5 +1,4 @@
 const getDB = require('../db/getDB');
-
 const { generateError } = require('../services/errors');
 
 const userExists = async (req, res, next) => {
@@ -8,10 +7,13 @@ const userExists = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const [users] = await connection.query(
-            `SELECT id FROM users WHERE id = ?`,
-            [req.user.id]
-        );
+        const query = `
+            SELECT id FROM users WHERE id = $1;
+        `;
+        const values = [req.user.id];
+
+        const result = await connection.query(query, values);
+        const users = result.rows;
 
         if (users.length < 1) {
             generateError('Usuario no encontrado', 404);
@@ -26,3 +28,4 @@ const userExists = async (req, res, next) => {
 };
 
 module.exports = userExists;
+
