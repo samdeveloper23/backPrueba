@@ -17,7 +17,7 @@ const selectPublicationtByIdQuery = async (publicationId, userId = 0) => {
             P.userId AS userId,
             P.description,
             U.username AS author,
-            U.avatar AS authorAvatar, -- Nuevo campo para el avatar del autor
+            U.avatar AS authorAvatar,
             P.userId AS authorId,
             P.photoName AS photoName,
             P.videoName AS videoName,

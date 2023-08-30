@@ -14,7 +14,8 @@ const selectAllUsersQuery = async (keyword = '') => {
                 email, 
                 role, 
                 avatar,
-                place
+                place,
+                personalInfo
             FROM users 
             WHERE username ILIKE $1 OR role ILIKE $2 OR place ILIKE $3
         `;
