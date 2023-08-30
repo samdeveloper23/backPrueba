@@ -35,7 +35,7 @@ const selectPublicationtByIdQuery = async (publicationId, userId = 0) => {
         LEFT JOIN comments C ON P.id = C.publicationId
         LEFT JOIN users UC ON C.userId = UC.id
         WHERE P.id = $2
-        GROUP BY P.id, C.id, U.username, U.avatar
+        GROUP BY P.id, C.id, U.username, U.avatar, UC.username, UC.avatar
       `,
             [userId, publicationId]
         );
